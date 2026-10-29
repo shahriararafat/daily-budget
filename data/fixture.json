@@ -1,0 +1,27 @@
+{
+  "transactions": [
+    [1, "2026-10-02", 180, "BDT", "food", "Groceries", "expense"],
+    [2, "2026-10-05", 90, "BDT", "transport", "Bus pass", "expense"],
+    [4, "2026-10-08", 1200, "BDT", "bills", "Electricity", "expense"],
+    [5, "2026-10-11", 650, "BDT", "shopping", "Raincoat", "expense"],
+    [6, "2026-10-14", 400, "BDT", "health", "Pharmacy", "expense"],
+    [8, "2026-10-16", 25000, "BDT", "income", "October salary", "income"],
+    [9, "2026-10-18", 220, "BDT", "entertainment", "Cinema", "expense"],
+    [10, "2026-10-20", 1500, "BDT", "education", "Course fee", "expense"],
+    [11, "2026-10-22", 75, "BDT", "food", "Tea and snacks", "expense"],
+    [12, "2026-10-24", 320, "BDT", "family", "Sent home", "expense"],
+    [13, "2026-10-25", 499, "BDT", "subscriptions", "Mobile data", "expense"],
+    [14, "2026-10-26", 140, "BDT", "transport", "CNG", "expense"],
+    [15, "2026-10-28", 20, "BDT", "food", "Water (paid via bKash)", "expense"],
+    [17, "2026-10-27", 60, "BDT", "food", "Dinner", "expense"],
+    [18, "2026-10-28", 35, "BDT", "transport", "Rickshaw", "expense"],
+    [19, "2026-09-30", 500, "BDT", "food", "September dinner", "expense"],
+    [20, "2026-10-29", 45, "BDT", "food", "Breakfast", "expense"],
+    [21, "2026-10-29", 30, "BDT", "transport", "Rickshaw to the market", "expense"]
+  ],
+  "dailySpend": [
+    ["2026-10-21", "", ""],
+    ["2026-10-22", "", 100],
+    ["2026-10-29", "", 100]
+  ]
+}
