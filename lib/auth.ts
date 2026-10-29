@@ -64,6 +64,19 @@ export async function isValidSession(token: string | undefined): Promise<boolean
   return verifySessionToken(token, secret);
 }
 
+export function readBearer(header: string | null): string | undefined {
+  if (!header) return undefined;
+  const match = /^Bearer\s+(\S+)\s*$/i.exec(header);
+  return match?.[1];
+}
+
+export async function isRequestAuthorized(cookie: string | undefined, authorization: string | null): Promise<boolean> {
+  const secret = passcode();
+  const bearer = readBearer(authorization);
+  if (secret && bearer !== undefined && (await passcodeMatches(bearer, secret))) return true;
+  return isValidSession(cookie);
+}
+
 export function sessionCookie(token: string) {
   return {
     name: SESSION_COOKIE,

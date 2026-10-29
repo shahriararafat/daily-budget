@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { createSessionToken, passcodeMatches, SESSION_MAX_AGE_SECONDS, verifySessionToken } from "./auth";
+import {
+  createSessionToken,
+  isRequestAuthorized,
+  passcodeMatches,
+  SESSION_MAX_AGE_SECONDS,
+  verifySessionToken,
+} from "./auth";
 
 describe("session cookie", () => {
   it("accepts a token it just signed until the expiry instant", async () => {
@@ -22,3 +28,40 @@ describe("session cookie", () => {
     await expect(passcodeMatches("", "1234")).resolves.toBe(false);
   });
 });
+
+describe("bearer passcode", () => {
+  const previous = process.env.APP_PASSCODE;
+
+  it("accepts Authorization: Bearer and still accepts the cookie", async () => {
+    process.env.APP_PASSCODE = "demo-pass";
+    try {
+      await expect(isRequestAuthorized(undefined, "Bearer demo-pass")).resolves.toBe(true);
+      await expect(isRequestAuthorized(undefined, "bearer demo-pass")).resolves.toBe(true);
+      await expect(isRequestAuthorized(undefined, "Bearer demo-pass-extra")).resolves.toBe(false);
+      await expect(isRequestAuthorized(undefined, "Bearer demo")).resolves.toBe(false);
+      await expect(isRequestAuthorized(undefined, "Bearer demo-pas")).resolves.toBe(false);
+      await expect(isRequestAuthorized(undefined, "Basic demo-pass")).resolves.toBe(false);
+      await expect(isRequestAuthorized(undefined, null)).resolves.toBe(false);
+
+      const session = await createSessionToken("demo-pass");
+      await expect(isRequestAuthorized(session, null)).resolves.toBe(true);
+      await expect(isRequestAuthorized(session, "Bearer wrong")).resolves.toBe(true);
+    } finally {
+      restorePasscode(previous);
+    }
+  });
+
+  it("rejects a bearer token when APP_PASSCODE is unset", async () => {
+    delete process.env.APP_PASSCODE;
+    try {
+      await expect(isRequestAuthorized(undefined, "Bearer demo-pass")).resolves.toBe(false);
+    } finally {
+      restorePasscode(previous);
+    }
+  });
+});
+
+function restorePasscode(previous: string | undefined) {
+  if (previous === undefined) delete process.env.APP_PASSCODE;
+  else process.env.APP_PASSCODE = previous;
+}
